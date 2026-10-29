@@ -28,6 +28,7 @@ export const readNight: ReadNight = (runsDir, night) => {
   if (!existsSync(file)) return null;
   const byJob = new Map<string, Line[]>();
   let badLines = 0;
+  const counts: Record<JobStatus, number> = { ok: 0, retry: 0, fail: 0 };
   for (const raw of readFileSync(file, 'utf8').split('\n')) {
     if (raw.trim() === '') continue;
     const line = parseLine(raw);
@@ -35,6 +36,7 @@ export const readNight: ReadNight = (runsDir, night) => {
       badLines++;
       continue;
     }
+    counts[line.status]++;
     const list = byJob.get(line.job) ?? [];
     list.push(line);
     byJob.set(line.job, list);
@@ -56,5 +58,6 @@ export const readNight: ReadNight = (runsDir, night) => {
         last: lastLine.at,
       };
     });
-  return { night, rows, badLines };
+  // counts is left off when no line parsed (empty file): the board shows — there.
+  return rows.length === 0 ? { night, rows, badLines } : { night, rows, badLines, counts };
 };

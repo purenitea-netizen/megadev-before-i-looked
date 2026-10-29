@@ -17,6 +17,7 @@ export type Night = {
   night: string; // YYYY-MM-DD
   rows: DigestRow[]; // sorted by job
   badLines: number; // lines that did not parse, counted and never thrown
+  counts?: Record<JobStatus, number>; // parsed lines per status
 };
 
 // Reads runs/<night>.jsonl. Returns null when the night has no file (the route answers 404);
