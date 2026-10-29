@@ -12,8 +12,8 @@ interface DigestJson {
   rows: { job: string }[];
 }
 
-function line(job: string, ts: string): string {
-  return JSON.stringify({ job, status: 'ok', ts, owner: 'me' });
+function line(job: string, at: string): string {
+  return JSON.stringify({ job, status: 'ok', at, owner: 'me' });
 }
 
 let tmpApp: ReturnType<typeof createApp>;
